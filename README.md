@@ -690,6 +690,88 @@ O desenvolvimento será conduzido de forma incremental nas seguintes etapas:
 * [ ] Integrar Prometheus e Grafana.
 * [ ] Criar dashboards operacionais e monitorar métricas de distribuição e atendimento.
 
+
+## 14. Evolução arquitetural futura
+
+O RevendaFlow será inicialmente desenvolvido como um monólito modular, priorizando consistência transacional, simplicidade operacional e separação de responsabilidades. A arquitetura inicial não dependerá de infraestrutura de mensageria.
+
+À medida que a aplicação evoluir e surgirem necessidades de processamento assíncrono, desacoplamento entre componentes e integração com serviços externos, poderão ser introduzidos mecanismos de comunicação orientados a eventos.
+
+### 14.1 Arquitetura orientada a eventos
+
+A evolução prevê a adoção gradual de uma arquitetura Event-Driven, utilizando eventos de domínio para representar fatos relevantes ocorridos na aplicação, permitindo que diferentes componentes processem essas informações de forma independente.
+
+Eventos candidatos:
+
+- `OpportunityCreatedEvent`
+- `OpportunityAssignedEvent`
+- `OpportunityTransferredEvent`
+- `OpportunityStartedEvent`
+- `OpportunityCompletedEvent`
+- `DealerCreatedEvent`
+- `UserDealerChangedEvent`
+
+Os eventos poderão ser consumidos por processos de distribuição, notificações, auditoria, métricas e futuras integrações externas, sem acoplamento direto entre os componentes produtores e consumidores.
+
+### 14.2 Mensageria e processamento assíncrono
+
+Como evolução, poderá ser adotado **RabbitMQ** para gerenciamento de filas, roteamento de mensagens e processamento assíncrono.
+
+Possíveis aplicações:
+
+- Processamento assíncrono de distribuição de oportunidades;
+- Envio de notificações após atribuições ou transferências;
+- Integração com sistemas externos;
+- Processamento de eventos operacionais;
+- Geração de relatórios e métricas;
+- Execução de tarefas que não precisam bloquear a resposta HTTP.
+
+A adoção da mensageria deverá preservar a consistência dos dados, a idempotência dos consumidores, a rastreabilidade dos eventos e o tratamento de falhas de processamento.
+
+### 14.3 Transactional Outbox Pattern
+
+Para garantir maior confiabilidade na publicação de eventos, poderá ser implementado o padrão **Transactional Outbox**.
+
+A persistência da alteração de negócio e do evento a ser publicado ocorrerá na mesma transação do banco de dados. Um processo independente será responsável por identificar eventos pendentes, publicá-los no broker e controlar seu processamento.
+
+Essa abordagem reduz o risco de inconsistência entre a persistência da aplicação e a publicação de mensagens, especialmente em cenários de indisponibilidade do broker.
+
+### 14.4 Confiabilidade e resiliência dos consumidores
+
+A arquitetura de mensageria deverá contemplar:
+
+- Idempotência no processamento de mensagens;
+- Política de retry com limites e intervalos definidos;
+- Dead Letter Queue (DLQ) para mensagens que não puderem ser processadas;
+- Controle de ACK e NACK;
+- Registro e rastreabilidade de eventos;
+- Monitoramento de filas, consumidores e mensagens pendentes;
+- Proteção contra processamento duplicado e concorrente.
+
+### 14.5 Observabilidade e monitoramento avançado
+
+Com o aumento da complexidade operacional, poderão ser adicionados:
+
+- Prometheus para coleta de métricas;
+- Grafana para dashboards operacionais;
+- Monitoramento de latência e throughput;
+- Métricas de distribuição e atendimento;
+- Monitoramento de filas, retries e DLQ;
+- Alertas para falhas e degradação de serviços.
+
+### 14.6 Roadmap de evolução
+
+| Fase | Evolução | Objetivo |
+|---|---|---|
+| 1 | Monólito modular e transações | Implementar os fluxos de negócio com consistência e simplicidade |
+| 2 | Eventos de domínio | Desacoplar a comunicação lógica entre componentes |
+| 3 | Transactional Outbox | Garantir confiabilidade na publicação de eventos |
+| 4 | RabbitMQ e consumidores assíncronos | Processamento desacoplado e integração entre componentes |
+| 5 | Retry, DLQ e idempotência | Resiliência e confiabilidade do processamento |
+| 6 | Prometheus e Grafana | Monitoramento operacional e métricas de desempenho |
+
+A evolução será incremental, orientada pelas necessidades reais do sistema, evitando introduzir complexidade de infraestrutura antes que ela seja necessária.
+
 ---
 
 Este README serve como referência técnica e arquitetural oficial do **DriveFlow**. Alterações futuras na arquitetura deverão ser justificadas e documentadas aqui à medida que o projeto evoluir.
