@@ -403,45 +403,53 @@ src/
 ## 6. Modelo conceitual de domínio
 
 ```mermaid
+
 erDiagram
     DEALER ||--o{ USER_DEALER : possui
     USER ||--o{ USER_DEALER : participa
     USER_DEALER }o--|| ROLE : possui
+
     DEALER ||--o{ OPPORTUNITY : recebe
     USER o|--o{ OPPORTUNITY : atende
+
     OPPORTUNITY ||--o{ OPPORTUNITY_HISTORY : registra
-    USER o|--o{ OPPORTUNITY_HISTORY : movimenta
+
+    USER o|--o{ OPPORTUNITY_HISTORY : "usuario anterior"
+    USER o|--o{ OPPORTUNITY_HISTORY : "novo usuario"
+    USER o|--o{ OPPORTUNITY_HISTORY : "responsavel pela alteracao"
 
     DEALER {
-        uuid id
-        string cnpj
+        uuid id PK
+        string cnpj UK
         string social_name
+        string status
     }
 
     USER {
-        uuid id
+        uuid id PK
         string name
-        string email
+        string email UK
         string password_hash
         boolean is_admin
+        string status
     }
 
     ROLE {
-        uuid id
-        string name
+        uuid id PK
+        string name UK
     }
 
     USER_DEALER {
-        uuid id
-        uuid user_id
-        uuid dealer_id
-        uuid role_id
+        uuid id PK
+        uuid user_id FK
+        uuid dealer_id FK
+        uuid role_id FK
     }
 
     OPPORTUNITY {
-        uuid id
-        uuid dealer_id
-        uuid responsible_user_id
+        uuid id PK
+        uuid dealer_id FK
+        uuid responsible_user_id FK
         string customer_name
         string customer_email
         string customer_phone
@@ -457,11 +465,11 @@ erDiagram
     }
 
     OPPORTUNITY_HISTORY {
-        uuid id
-        uuid opportunity_id
-        uuid previous_user_id
-        uuid new_user_id
-        uuid changed_by_user_id
+        uuid id PK
+        uuid opportunity_id FK
+        uuid previous_user_id FK
+        uuid new_user_id FK
+        uuid changed_by_user_id FK
         string change_type
         string reason
         datetime created_at
