@@ -1,0 +1,28 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "revendaFlow",
+    "buildTool": "maven",
+    "cacheProvider": "no",
+    "creationTimestamp": 1795126561950,
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "enableHibernateCache": null,
+    "enableTranslation": true,
+    "entities": [],
+    "feignClient": null,
+    "jhipsterVersion": "8.11.0",
+    "jwtSecretKey": "ZDAxNjhlZDEwMDQzMmRiMWJhMDlkZmNjZDkzNDg3OTA0YTFiNWQwYjI1N2EwNGY0MDA2YmVkMDQ4MTg3YzRjYTM3YWM4YmI3ZTVhY2JlN2FjMGM2ZmExZDc5YzRiYjk5YWJjMTM3NmMxNWYzNTljMjZmMGRlMTVjNTUxNjY0ZTQ=",
+    "languages": ["pt-br"],
+    "nativeLanguage": "pt-br",
+    "packageName": "com.backend.revendaflow",
+    "prodDatabaseType": "postgresql",
+    "reactive": false,
+    "serverPort": null,
+    "serviceDiscoveryType": null,
+    "skipClient": true,
+    "syncUserWithIdp": null,
+    "testFrameworks": ["cucumber"]
+  }
+}
