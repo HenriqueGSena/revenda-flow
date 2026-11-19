@@ -1,6 +1,6 @@
 <div align="center">
 
-# DriveFlow — Gestão de Revendas
+# RevendaFlow — Gestão de Revendas
 
 Uma solução backend para gestão de revendas automotivas, usuários, permissões e oportunidades comerciais.
 
