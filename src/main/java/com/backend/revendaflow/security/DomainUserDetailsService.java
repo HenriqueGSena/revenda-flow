@@ -3,7 +3,8 @@ package com.backend.revendaflow.security;
 import com.backend.revendaflow.domain.Authority;
 import com.backend.revendaflow.domain.User;
 import com.backend.revendaflow.repository.UserRepository;
-import java.util.*;
+import java.util.Collection;
+import java.util.Locale;
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,14 +58,14 @@ public class DomainUserDetailsService implements UserDetailsService {
 
     public static class UserWithId extends org.springframework.security.core.userdetails.User {
 
-        private final Long id;
+        private final String id;
 
-        public UserWithId(String login, String password, Collection<? extends GrantedAuthority> authorities, Long id) {
+        public UserWithId(String login, String password, Collection<? extends GrantedAuthority> authorities, String id) {
             super(login, password, authorities);
             this.id = id;
         }
 
-        public Long getId() {
+        public String getId() {
             return id;
         }
 

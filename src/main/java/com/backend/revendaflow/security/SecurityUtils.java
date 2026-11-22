@@ -65,7 +65,7 @@ public final class SecurityUtils {
      *
      * @return the Id of the current user.
      */
-    public static Optional<Long> getCurrentUserId() {
+    public static Optional<String> getCurrentUserId() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
             .filter(authentication -> authentication.getPrincipal() instanceof ClaimAccessor)

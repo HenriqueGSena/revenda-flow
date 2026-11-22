@@ -14,7 +14,8 @@ import com.backend.revendaflow.service.dto.AdminUserDTO;
 import com.backend.revendaflow.service.mapper.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -38,7 +39,7 @@ class UserResourceIT {
     private static final String DEFAULT_LOGIN = "johndoe";
     private static final String UPDATED_LOGIN = "jhipster";
 
-    private static final Long DEFAULT_ID = 1L;
+    private static final String DEFAULT_ID = "00000000-0000-0000-0000-000000000001";
 
     private static final String DEFAULT_EMAIL = "johndoe@localhost";
     private static final String UPDATED_EMAIL = "jhipster@localhost";
@@ -468,7 +469,7 @@ class UserResourceIT {
         User user2 = new User();
         user2.setId(user1.getId());
         assertThat(user1).isEqualTo(user2);
-        user2.setId(2L);
+        user2.setId("00000000-0000-0000-0000-000000000002");
         assertThat(user1).isNotEqualTo(user2);
         user1.setId(null);
         assertThat(user1).isNotEqualTo(user2);
